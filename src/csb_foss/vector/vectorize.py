@@ -53,6 +53,11 @@ def vectorize_raster(
         crs = src.crs
         nodata = src.nodata
 
+        # rasterio.features.shapes requires int32 or smaller
+        # Cast uint32 to int32 for vectorization
+        if data.dtype == np.uint32:
+            data = data.astype(np.int32)
+
         # Create mask for nodata
         if mask_nodata and nodata is not None:
             mask = data != nodata
@@ -227,6 +232,10 @@ def vectorize_windowed(
         with rasterio.open(raster_path) as src:
             data = src.read(1, window=window)
             transform = src.window_transform(window)
+
+            # rasterio.features.shapes requires int32 or smaller
+            if data.dtype == np.uint32:
+                data = data.astype(np.int32)
 
             mask = data != nodata if nodata is not None else None
 

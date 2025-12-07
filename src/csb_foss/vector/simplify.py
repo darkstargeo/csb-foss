@@ -8,6 +8,7 @@ Replaces arcpy.cartography.SimplifyPolygon().
 from typing import Optional
 
 import geopandas as gpd
+import numpy as np
 from shapely.geometry import Polygon, MultiPolygon
 from shapely.validation import make_valid
 from tqdm import tqdm
@@ -187,7 +188,3 @@ def calculate_boundary_roughness(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     gdf = gdf.copy()
     gdf["roughness"] = gdf.geometry.length / np.sqrt(gdf.geometry.area)
     return gdf
-
-
-# Import numpy for calculate_boundary_roughness
-import numpy as np
