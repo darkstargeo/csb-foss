@@ -20,25 +20,35 @@ def load_tiger_roads(
     bounds: Optional[tuple[float, float, float, float]] = None,
     crs: Optional[str] = None,
     mtfcc_filter: Optional[list[str]] = None,
+    layer: Optional[str] = None,
 ) -> gpd.GeoDataFrame:
     """
     Load TIGER/Line road data.
 
     Args:
-        roads_path: Path to TIGER roads shapefile or GeoPackage
+        roads_path: Path to TIGER roads shapefile, GeoPackage, or Geodatabase
         bounds: Optional bounding box (minx, miny, maxx, maxy) to filter
         crs: Target CRS for reprojection
         mtfcc_filter: Optional list of MTFCC codes to include
                      (e.g., ['S1100', 'S1200'] for primary/secondary roads)
+        layer: Layer name for geodatabase (auto-detected if None)
 
     Returns:
         GeoDataFrame of road lines
     """
+    # Auto-detect layer for geodatabases
+    roads_path = Path(roads_path)
+    if layer is None and roads_path.suffix.lower() == '.gdb':
+        import fiona
+        layers = fiona.listlayers(roads_path)
+        layer = 'Roads' if 'Roads' in layers else layers[0] if layers else None
+
     # Read with optional bbox filter
-    if bounds is not None:
-        gdf = gpd.read_file(roads_path, bbox=bounds)
-    else:
-        gdf = gpd.read_file(roads_path)
+    read_kwargs = {'bbox': bounds} if bounds is not None else {}
+    if layer is not None:
+        read_kwargs['layer'] = layer
+
+    gdf = gpd.read_file(roads_path, **read_kwargs)
 
     # Filter by MTFCC if specified
     if mtfcc_filter is not None and "MTFCC" in gdf.columns:
@@ -55,22 +65,33 @@ def load_tiger_rails(
     rails_path: Path,
     bounds: Optional[tuple[float, float, float, float]] = None,
     crs: Optional[str] = None,
+    layer: Optional[str] = None,
 ) -> gpd.GeoDataFrame:
     """
     Load TIGER/Line railroad data.
 
     Args:
-        rails_path: Path to TIGER rails shapefile or GeoPackage
+        rails_path: Path to TIGER rails shapefile, GeoPackage, or Geodatabase
         bounds: Optional bounding box to filter
         crs: Target CRS for reprojection
+        layer: Layer name for geodatabase (auto-detected if None)
 
     Returns:
         GeoDataFrame of railroad lines
     """
-    if bounds is not None:
-        gdf = gpd.read_file(rails_path, bbox=bounds)
-    else:
-        gdf = gpd.read_file(rails_path)
+    # Auto-detect layer for geodatabases
+    rails_path = Path(rails_path)
+    if layer is None and rails_path.suffix.lower() == '.gdb':
+        import fiona
+        layers = fiona.listlayers(rails_path)
+        layer = 'Rails' if 'Rails' in layers else layers[0] if layers else None
+
+    # Read with optional bbox filter
+    read_kwargs = {'bbox': bounds} if bounds is not None else {}
+    if layer is not None:
+        read_kwargs['layer'] = layer
+
+    gdf = gpd.read_file(rails_path, **read_kwargs)
 
     if crs is not None and gdf.crs != crs:
         gdf = gdf.to_crs(crs)
