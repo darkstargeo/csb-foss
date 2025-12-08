@@ -68,3 +68,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Local status file (not for public)
+STATUS.md
