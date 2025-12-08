@@ -1,7 +1,7 @@
 # CSB-FOSS Project Status
 
-**Last Updated**: 2025-12-07
-**Project Phase**: Full Pipeline Testing Complete
+**Last Updated**: 2025-12-08
+**Project Phase**: Full Tennessee Processing In Progress
 **Repository**: https://github.com/darkstargeo/csb-foss
 
 ---
@@ -31,6 +31,8 @@
 | 5km baseline | West TN | 2,858 sigs | 393 polygons | ~30s |
 | 25km baseline | West TN | 64,199 sigs | 13,240 polygons | ~10min |
 | 5km experimental | West TN | Edge+Roads | 44 segments | ~5s |
+| 5-tile tiled (20km) | SW TN | 5 tiles | 8,385 polygons | 3:38 |
+| Full TN (546 tiles) | Full State | IN PROGRESS | ~34s/tile | ~5hrs |
 
 ### Bug Fixes Applied
 
@@ -128,6 +130,21 @@ output/experimental/             # 5km experimental test
 | `pipeline/create.py` | DONE | Stage 1 orchestration |
 | `pipeline/prep.py` | DONE | Stage 2 orchestration |
 | `pipeline/distribute.py` | DONE | Stage 3 orchestration |
+| `pipeline/tiled_create.py` | DONE | Tiled state processing |
+| `vector/eliminate_fast.py` | DONE | Parallel elimination with joblib |
+
+---
+
+## Official CSB Comparison (2017-2024)
+
+| Metric | Official CSB | FOSS (5-tile test) | Notes |
+|--------|-------------|-------------------|-------|
+| TN polygons | 507,991 | 8,385 (partial) | Full TN in progress |
+| TN area | 37,464 km² | 1,858 km² | 5 tiles only |
+| Mean polygon | 73,748 m² | 221,569 m² | Different filtering |
+| Median polygon | 27,151 m² | 13,500 m² | |
+| CDL years | 2017-2024 | 2017-2024 | Same period |
+| Unique crops | 62-76/year | TBD | |
 
 ---
 
@@ -135,14 +152,22 @@ output/experimental/             # 5km experimental test
 
 | Task | Priority | Notes |
 |------|----------|-------|
-| Run full Tennessee baseline | HIGH | ~800km wide, need tiled processing |
-| Compare with official CSB | MEDIUM | Need reference data |
-| Test NAIP edge detection | MEDIUM | COG files ready |
-| Performance optimization | LOW | Profiling needed |
+| Complete full TN baseline | HIGH | 546 tiles, ~5 hours total |
+| Compare FOSS vs official CSB | HIGH | Official CSB extracted |
+| Refine crop filtering | MEDIUM | Match official CSB criteria |
+| Performance optimization | LOW | eliminate_fast helps |
 
 ---
 
 ## Recent Changes
+
+### 2025-12-08 (Session 3)
+- Downloaded official CSB-2024 (3.4GB, 507K TN polygons)
+- Created tiled_create.py for state-level processing
+- Created eliminate_fast.py with parallel joblib processing
+- Tested 5-tile processing: 8,385 polygons, 1,858 km²
+- Started full Tennessee processing: 546 tiles, ~5 hours
+- Initial FOSS vs official CSB comparison
 
 ### 2025-12-07 (Session 2 - continued)
 - Added TIGER road geodatabase support
