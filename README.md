@@ -42,9 +42,9 @@ Edit `config/csb_foss.ini` with your data locations:
 
 ```ini
 [data]
-cdl_30m = S:\_STAGING\01_RASTER_CORPUS\annual_cdl
-cdl_10m = S:\_STAGING\01_RASTER_CORPUS\annual_cdl_10m
-naip = S:\_STAGING\01_RASTER_CORPUS\naip_cog\Tennessee_Statewide
+cdl_30m = /path/to/annual_cdl
+cdl_10m = /path/to/annual_cdl_10m
+naip = /path/to/naip_cog
 tiger_roads = /path/to/tiger/roads
 ```
 

@@ -47,15 +47,14 @@
 ## Data Paths (Configured)
 
 ```
-CDL 30m:  S:\_STAGING\01_RASTER_CORPUS\annual_cdl
+CDL 30m:  /path/to/annual_cdl
           17 years (2008-2024): 2008_30m_cdls.tif ... 2024_30m_cdls.tif
-CDL 10m:  S:\_STAGING\01_RASTER_CORPUS\annual_cdl_10m
+CDL 10m:  /path/to/annual_cdl_10m
           1 year (2024): 2024_10m_cdls.tif
-NAIP TN:  S:\_STAGING\01_RASTER_CORPUS\naip_cog\Tennessee_Statewide
-          6688 COG files
-TIGER:    S:\_STAGING\02_VECTOR_CORPUS\tigerline_2024
-          tlgdb_2024_a_us_roads.gdb (17.8M features)
-          tlgdb_2024_a_us_rails.gdb
+NAIP:     /path/to/naip_cog
+          COG format files
+TIGER:    /path/to/tigerline_2024
+          Roads and Rails geodatabases
 ```
 
 ---
